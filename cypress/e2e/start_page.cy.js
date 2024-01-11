@@ -26,6 +26,9 @@ describe('NeoDash E2E Tests', () => {
       onBeforeLoad(win) {
         win.localStorage.clear();
       },
+      onLoad(win) {
+        win.localStorage.clear();
+      },
     });
 
     cy.get('#form-dialog-title', { timeout: 20000 }).should('contain', 'NeoDash - Neo4j Dashboard Builder').click();
@@ -65,6 +68,7 @@ describe('NeoDash E2E Tests', () => {
     checkInitialState();
     createCard();
   });
+cy.clearLocalStorage();
 
   // Test each type of card
   it('creates a table report', () => {
