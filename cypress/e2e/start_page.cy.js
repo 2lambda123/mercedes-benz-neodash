@@ -119,7 +119,12 @@ cy.clearLocalStorage();
     cy.get('main .react-grid-item:eq(2) .MuiDataGrid-footerContainer').should('contain', '1–5 of 8');
     cy.get('main .react-grid-item:eq(2) .MuiDataGrid-footerContainer button[aria-label="Go to next page"]').click();
     cy.get('main .react-grid-item:eq(2) .MuiDataGrid-virtualScroller .MuiDataGrid-row').should('have.length', 3);
-    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-footerContainer').should('contain', '6–8 of 8');
+    cy.get('main .react-grid-item button[aria-label="add report"]').should('be.visible').click();
+cy.get('main .react-grid-item').contains('No query specified.').parentsUntil('.react-grid-item').find('button[aria-label="settings"]', { timeout: 2000 }).should('be.visible').click();
+cy.get('main .react-grid-item:eq(2) #type input[name="Type"]').should('have.value', 'Bar Chart').click();
+cy.get('main .react-grid-item:eq(2) #index input[name="Category"]', { timeout: WAITING_TIME }).should('have.value', 'released');
+cy.get('main .react-grid-item:eq(2) #value input[name="Value"]').should('have.value', 'count');
+cy.get('main .react-grid-item:eq(2) .MuiCardContent-root svg > g > g').should('have.length', 8);
   });
 
   it('creates a bar chart report', () => {
