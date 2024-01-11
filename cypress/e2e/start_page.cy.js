@@ -60,7 +60,31 @@ describe('NeoDash E2E Tests', () => {
   });
 
   it('initializes the dashboard', () => {
-    checkInitialState();
+  // Updated test for creating a table report
+    cy.get('main .react-grid-item button[aria-label="add report"]').should('be.visible').click();
+    cy.get('main .react-grid-item')
+      .contains('No query specified.')
+      .parentsUntil('.react-grid-item')
+      .find('button[aria-label="settings"]', { timeout: 2000 })
+      .should('be.visible')
+      .click();
+    
+    cy.get('main .react-grid-item:eq(2) #type input[name="Type"]').should('have.value', 'Table');
+    cy.get('main .react-grid-item:eq(2) .ReactCodeMirror').type(tableCypherQuery);
+    cy.wait(400);
+    
+    cy.get('main .react-grid-item:eq(2)').contains('Advanced settings').click();
+    
+    cy.get('main .react-grid-item:eq(2) button[aria-label="run"]').click();
+    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-columnHeaders', { timeout: WAITING_TIME })
+      .should('contain', 'title')
+      .and('contain', 'released')
+      .and('not.contain', '__id');
+    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-virtualScroller .MuiDataGrid-row').should('have.length', 5);
+    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-footerContainer').should('contain', '1–5 of 8');
+    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-footerContainer button[aria-label="Go to next page"]').click();
+    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-virtualScroller .MuiDataGrid-row').should('have.length', 3);
+    cy.get('main .react-grid-item:eq(2) .MuiDataGrid-footerContainer').should('contain', '6–8 of 8');
   });
 
   it('creates a new card', () => {
