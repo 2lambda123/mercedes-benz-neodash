@@ -53,11 +53,10 @@ describe('NeoDash E2E Tests', () => {
     // cy.get('#protocol').click()
     // cy.contains('neo4j').click()
     cy.get('#url').clear().type('localhost');
-    // cy.get('#database').type('neo4j')
     cy.get('#dbusername').clear().type('neo4j');
     cy.get('#dbpassword').type('test1234');
     cy.get('button').contains('Connect').click();
-    cy.wait(100);
+    cy.wait(1000); // Increase the wait time if necessary
   });
 
   it('initializes the dashboard', () => {
